@@ -43,6 +43,9 @@
             <action id="cn.gudqs.docer.savior.restful" class="cn.gudqs7.plugins.idea.action.RestfulDocSaviorAction"
                     text="生成Api接口文档(Restful)" description="生成Api接口文档(Restful)">
             </action>
+            <action id="cn.gudqs.docer.savior.txt" class="cn.gudqs7.plugins.idea.action.TxtDocSaviorAction"
+                    text="生成Api接口文档(Txt)" description="生成Api接口文档(Txt)">
+            </action>
         </group>
 
         <group id="cn.gudqs.docer.savior.project" text="Docer Savior Project Group">

@@ -27,6 +27,8 @@ public interface AnnotationHolder {
     String QNAME_OF_DELETE_MAPPING = "org.springframework.web.bind.annotation.DeleteMapping";
     String QNAME_OF_REQ_PARAM = "org.springframework.web.bind.annotation.RequestParam";
     String QNAME_OF_REQUEST_BODY = "org.springframework.web.bind.annotation.RequestBody";
+    String QNAME_OF_REQUEST_HEADERR = "org.springframework.web.bind.annotation.RequestHeader";
+    String QNAME_OF_REQUEST_PATH = "org.springframework.web.bind.annotation.PathVariable";
 
 
     /**
@@ -91,6 +93,26 @@ public interface AnnotationHolder {
      */
     default <T> T getAnnotationValueByReqParam(String attr) {
         return getAnnotationValueByQname(QNAME_OF_REQ_PARAM, attr);
+    }
+
+    /**
+     * 获取注解中的信息
+     *
+     * @param attr       注解字段
+     * @return 信息
+     */
+    default <T> T getAnnotationValueByHeaderParam(String attr) {
+        return  getAnnotationValueByQname(QNAME_OF_REQUEST_HEADERR, attr);
+    }
+
+    /**
+     * 获取注解中的信息
+     *
+     * @param attr       注解字段
+     * @return 信息
+     */
+    default <T> T getAnnotationValueByPathParam(String attr) {
+        return  getAnnotationValueByQname(QNAME_OF_REQUEST_PATH, attr);
     }
 
     /**

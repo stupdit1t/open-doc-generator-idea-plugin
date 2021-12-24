@@ -132,6 +132,34 @@ public class PsiParameterAnnotationHolderImpl implements AnnotationHolder {
             if (required != null && required) {
                 apiModelProperty.setRequired(true);
             }
+            return;
+        }
+        hasReqParamAnnotatation = hasAnnotatation(QNAME_OF_REQUEST_HEADERR);
+        if (hasReqParamAnnotatation) {
+            String name = getAnnotationValueByHeaderParam("name");
+            if (name == null) {
+                name = getAnnotationValueByHeaderParam("value");
+            }
+            if (name != null) {
+                apiModelProperty.setName(name + "(header)");
+            }
+            Boolean required = getAnnotationValueByHeaderParam("required");
+            if (required != null && required) {
+                apiModelProperty.setRequired(true);
+            }
+            return;
+        }
+        hasReqParamAnnotatation = hasAnnotatation(QNAME_OF_REQUEST_PATH);
+        if (hasReqParamAnnotatation) {
+            String name = getAnnotationValueByPathParam("name");
+            if (name == null) {
+                name = getAnnotationValueByPathParam("value");
+            }
+            if (name != null) {
+                apiModelProperty.setName(name + "(path)");
+            }
+
+            apiModelProperty.setRequired(true);
         }
     }
 

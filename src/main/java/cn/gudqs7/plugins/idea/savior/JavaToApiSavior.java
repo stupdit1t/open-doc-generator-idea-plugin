@@ -5,6 +5,7 @@ import cn.gudqs7.plugins.idea.pojo.ParamInfo;
 import cn.gudqs7.plugins.idea.pojo.ParamLineInfo;
 import cn.gudqs7.plugins.idea.pojo.annotation.ApiModelProperty;
 import cn.gudqs7.plugins.idea.theme.Theme;
+import cn.gudqs7.plugins.idea.theme.TxtTheme;
 import cn.gudqs7.plugins.idea.util.AnnotationHolder;
 import cn.gudqs7.plugins.idea.util.DataHolder;
 import cn.gudqs7.plugins.idea.util.IndexIncrementUtil;
@@ -90,6 +91,12 @@ public class JavaToApiSavior extends BaseSavior {
         }
         PsiType psiType = parameter.getType();
         String fieldName = parameter.getName();
+        if (parameter.getNode().getFirstChildNode().getText().contains("@RequestHeader")) {
+            fieldName += "(Header)";
+        }
+        if (parameter.getNode().getFirstChildNode().getText().contains("@PathVariable")) {
+            fieldName += "(Path)";
+        }
 
         String clazzTypeName = "请求参数";
         return java2apiCommon(project, psiType, fieldName, clazzTypeName, AnnotationHolder.getPsiParameterHolder(parameter), false);
@@ -123,10 +130,17 @@ public class JavaToApiSavior extends BaseSavior {
     private void convertPsiParameterListToMarkdown(Project project, Map<Integer, List<ParamInfo>> goMap, PsiParameterList parameterList) {
         String clazzTypeName = "Params";
         String clazzDesc = "接口参数列表";
+        System.out.println(parameterList.toString());
         PsiParameter[] typeDeclaredFields = parameterList.getParameters();
         List<ParamLineInfo> levelOther = new ArrayList<>();
         for (PsiParameter psiParameter : typeDeclaredFields) {
             String fieldName = psiParameter.getName();
+            if (psiParameter.getNode().getFirstChildNode().getText().indexOf("@RequestHeader") > -1) {
+                fieldName += "(Header)";
+            }
+            if (psiParameter.getNode().getFirstChildNode().getText().indexOf("@PathVariable") > -1) {
+                fieldName += "(Path)";
+            }
             PsiType psiFieldType = psiParameter.getType();
             AnnotationHolder annotationHolder = AnnotationHolder.getPsiParameterHolder(psiParameter);
 
@@ -368,13 +382,18 @@ public class JavaToApiSavior extends BaseSavior {
         return data;
     }
 
-    private String getLevelStr(int level) {
+    public String getLevelStr(int level) {
         if (level < 2) {
             return "";
         } else {
             StringBuilder str = new StringBuilder("└─");
             for (int i = 2; i < level; i++) {
-                str.insert(0, "&ensp;&ensp;&ensp;&ensp;");
+                if(this.theme instanceof TxtTheme){
+                    str.insert(0, "    ");
+                }else{
+                    str.insert(0, "&ensp;&ensp;&ensp;&ensp;");
+                }
+
             }
             return str.toString();
         }

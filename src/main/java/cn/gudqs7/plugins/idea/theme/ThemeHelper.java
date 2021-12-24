@@ -10,4 +10,8 @@ public class ThemeHelper {
         return RestfulTheme.getInstance();
     }
 
+    public static Theme getTxtTheme() {
+        return TxtTheme.getInstance();
+    }
+
 }

@@ -45,7 +45,9 @@ public class JavaToJsonSavior extends BaseSavior {
         Map<String, Object> map = new LinkedHashMap<>();
         String qualifiedName = "__parameters__";
         for (PsiParameter parameter : parameterList.getParameters()) {
-            handlePsiParameter(project, map, qualifiedName, parameter);
+            if(!(parameter.getNode().getFirstChildNode().getText().indexOf("@RequestHeader")>-1) && !(parameter.getNode().getFirstChildNode().getText().indexOf("@PathVariable")>-1)){
+                handlePsiParameter(project, map, qualifiedName, parameter);
+            }
         }
         psiClassCache.clear();
         earlyCache.clear();
@@ -114,6 +116,12 @@ public class JavaToJsonSavior extends BaseSavior {
 
     private void handlePsiParameter(Project project, Map<String, Object> map, String qualifiedName, PsiParameter parameter) {
         String fieldName = parameter.getName();
+        if (parameter.getNode().getFirstChildNode().getText().indexOf("@RequestHeader") > -1) {
+            fieldName += "(Header)";
+        }
+        if (parameter.getNode().getFirstChildNode().getText().indexOf("@PathVariable") > -1) {
+            fieldName += "(Path)";
+        }
         PsiType psiFieldType = parameter.getType();
         AnnotationHolder fieldAnnotation = AnnotationHolder.getPsiParameterHolder(parameter);
         boolean notHidden = handlerJsonByFieldInfo(project, qualifiedName, map, fieldName, psiFieldType, fieldAnnotation, null);

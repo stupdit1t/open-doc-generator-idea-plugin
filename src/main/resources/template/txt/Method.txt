@@ -1,0 +1,7 @@
+接口：{{interfaceName}}{{interfaceNotes}}
+地址：{{method}}: {{url}}
+协议：{{contentType}}
+参数说明：
+{{paramMemo}}
+Postman请求示例：
+{{jsonExample}}
